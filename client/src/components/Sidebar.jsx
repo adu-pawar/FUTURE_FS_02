@@ -22,7 +22,7 @@ const Sidebar = () => {
     <div className="flex h-screen w-64 flex-col justify-between bg-dark text-white shadow-2xl">
       <div>
         <div className="flex h-20 items-center justify-center border-b border-gray-700">
-          <h1 className="text-2xl font-bold text-primary">Customer manegment system</h1>
+          <h1 className="text-2xl font-bold text-primary">Customer manegment</h1>
         </div>
         <nav className="mt-6 flex flex-col gap-2 px-4">
           {navItems.map((item) => (
