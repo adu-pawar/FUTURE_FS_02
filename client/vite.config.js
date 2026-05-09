@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: '/',
+  base: '/FUTURE_FS_02/',
 })
