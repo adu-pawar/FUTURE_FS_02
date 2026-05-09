@@ -15,6 +15,9 @@ connectDB();
 
 const app = express();
 
+// Required for Render/Proxies
+app.set('trust proxy', 1);
+
 // Security and middleware
 app.use(helmet());
 app.use(cors());
