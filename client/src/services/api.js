@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.PROD ? '/api' : 'http://localhost:5000/api',
+  baseURL: import.meta.env.PROD ? '/api' : 'https://adu-pawar.github.io/FUTURE_FS_02/api',
 });
 
 // Add a request interceptor to attach the JWT token
