@@ -8,11 +8,20 @@
     "server": "nodemon server/server.js",
     "client": "npm run dev --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm install --prefix server && npm install --prefix client && npm run build --prefix client",
-    "install-all": "npm install && npm install --prefix client && npm install --prefix server"
+    "build": "npm install && npm install --prefix client && npm run build --prefix client"
   },
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "bcryptjs": "^3.0.3",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-async-handler": "^1.2.0",
+    "express-rate-limit": "^8.5.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.6.1",
+    "morgan": "^1.10.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

@@ -8,6 +8,11 @@ const connectDB = async () => {
     console.error(`Atlas connection failed: ${error.message}`);
     console.log('Falling back to in-memory MongoDB...');
     
+    if (process.env.NODE_ENV === 'production') {
+      console.error('Critical: MongoDB Atlas connection failed in production. Exiting.');
+      process.exit(1);
+    }
+
     try {
       const { MongoMemoryServer } = require('mongodb-memory-server');
       const mongod = await MongoMemoryServer.create();
