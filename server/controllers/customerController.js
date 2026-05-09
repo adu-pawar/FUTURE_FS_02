@@ -7,7 +7,7 @@ const Note = require('../models/Note');
 // @access  Private
 const getCustomers = asyncHandler(async (req, res) => {
   const { status, search } = req.query;
-  const query = {};
+  const query = { user: req.user.id };
   
   if (status) {
     query.status = status;
@@ -35,6 +35,12 @@ const getCustomerById = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error('Customer not found');
   }
+
+  // Make sure the logged-in user owns the customer
+  if (customer.user.toString() !== req.user.id) {
+    res.status(401);
+    throw new Error('User not authorized');
+  }
   
   res.status(200).json(customer);
 });
@@ -43,7 +49,10 @@ const getCustomerById = asyncHandler(async (req, res) => {
 // @route   POST /api/customers
 // @access  Private
 const createCustomer = asyncHandler(async (req, res) => {
-  const customer = await Customer.create(req.body);
+  const customer = await Customer.create({
+    ...req.body,
+    user: req.user.id,
+  });
   res.status(201).json(customer);
 });
 
@@ -56,6 +65,12 @@ const updateCustomer = asyncHandler(async (req, res) => {
   if (!customer) {
     res.status(404);
     throw new Error('Customer not found');
+  }
+
+  // Make sure the logged-in user owns the customer
+  if (customer.user.toString() !== req.user.id) {
+    res.status(401);
+    throw new Error('User not authorized');
   }
 
   // Use Object.assign and save() to trigger pre-save hooks
@@ -76,6 +91,12 @@ const deleteCustomer = asyncHandler(async (req, res) => {
     throw new Error('Customer not found');
   }
 
+  // Make sure the logged-in user owns the customer
+  if (customer.user.toString() !== req.user.id) {
+    res.status(401);
+    throw new Error('User not authorized');
+  }
+
   await customer.deleteOne();
   
   // Also delete associated notes
@@ -93,6 +114,12 @@ const addPayment = asyncHandler(async (req, res) => {
   if (!customer) {
     res.status(404);
     throw new Error('Customer not found');
+  }
+
+  // Make sure the logged-in user owns the customer
+  if (customer.user.toString() !== req.user.id) {
+    res.status(401);
+    throw new Error('User not authorized');
   }
 
   const { amountPaid, paymentMethod, transactionId, note } = req.body;

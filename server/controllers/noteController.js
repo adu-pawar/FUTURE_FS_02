@@ -7,7 +7,16 @@ const Customer = require('../models/Customer');
 // @route   GET /api/customers/:customerId/notes
 // @access  Private
 const getNotes = asyncHandler(async (req, res) => {
-  const notes = await Note.find({ customerId: req.params.customerId })
+  const { customerId } = req.params;
+
+  // Verify customer belongs to user
+  const customer = await Customer.findOne({ _id: customerId, user: req.user.id });
+  if (!customer) {
+    res.status(401);
+    throw new Error('User not authorized to access these notes');
+  }
+
+  const notes = await Note.find({ customerId })
     .populate('createdBy', 'name email')
     .sort({ createdAt: -1 });
     
@@ -31,19 +40,19 @@ const addNote = asyncHandler(async (req, res) => {
     throw new Error('Invalid Customer ID format');
   }
 
-  // Ensure customer exists
-  const customer = await Customer.findById(customerId);
+  // Ensure customer exists and belongs to the user
+  const customer = await Customer.findOne({ _id: customerId, user: req.user.id });
   if (!customer) {
     const isMemory = mongoose.connection.host === '127.0.0.1';
     res.status(404);
-    throw new Error(isMemory ? 'Customer data lost due to server restart. Please refresh.' : 'Customer not found');
+    throw new Error(isMemory ? 'Customer data lost or unauthorized. Please refresh.' : 'Customer not found or unauthorized');
   }
 
   try {
     const note = new Note({
       customerId,
       text,
-      createdBy: req.user._id,
+      createdBy: req.user.id,
     });
 
     await note.save();
@@ -68,6 +77,13 @@ const updateNote = asyncHandler(async (req, res) => {
     throw new Error('Note not found');
   }
 
+  // Verify customer belongs to user
+  const customer = await Customer.findOne({ _id: note.customerId, user: req.user.id });
+  if (!customer) {
+    res.status(401);
+    throw new Error('User not authorized');
+  }
+
   const updatedNote = await Note.findByIdAndUpdate(
     req.params.noteId,
     { text: req.body.text },
@@ -86,6 +102,13 @@ const deleteNote = asyncHandler(async (req, res) => {
   if (!note) {
     res.status(404);
     throw new Error('Note not found');
+  }
+
+  // Verify customer belongs to user
+  const customer = await Customer.findOne({ _id: note.customerId, user: req.user.id });
+  if (!customer) {
+    res.status(401);
+    throw new Error('User not authorized');
   }
 
   await note.deleteOne();

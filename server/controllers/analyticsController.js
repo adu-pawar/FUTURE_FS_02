@@ -5,13 +5,17 @@ const Customer = require('../models/Customer');
 // @route   GET /api/analytics
 // @access  Private
 const getAnalytics = asyncHandler(async (req, res) => {
-  const totalCustomers = await Customer.countDocuments();
-  const newCustomers = await Customer.countDocuments({ status: 'New' });
-  const contactedCustomers = await Customer.countDocuments({ status: 'Contacted' });
-  const convertedCustomers = await Customer.countDocuments({ status: 'Converted' });
+  const mongoose = require('mongoose');
+  const userId = new mongoose.Types.ObjectId(req.user.id);
+
+  const totalCustomers = await Customer.countDocuments({ user: req.user.id });
+  const newCustomers = await Customer.countDocuments({ user: req.user.id, status: 'New' });
+  const contactedCustomers = await Customer.countDocuments({ user: req.user.id, status: 'Contacted' });
+  const convertedCustomers = await Customer.countDocuments({ user: req.user.id, status: 'Converted' });
   
   // Status Distribution
   const statusDistribution = await Customer.aggregate([
+    { $match: { user: userId } },
     { $group: { _id: '$status', count: { $sum: 1 } } }
   ]);
   
@@ -20,7 +24,7 @@ const getAnalytics = asyncHandler(async (req, res) => {
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
   
   const monthlyGrowth = await Customer.aggregate([
-    { $match: { createdAt: { $gte: sixMonthsAgo } } },
+    { $match: { user: userId, createdAt: { $gte: sixMonthsAgo } } },
     {
       $group: {
         _id: { $dateToString: { format: '%Y-%m', date: '$createdAt' } },
