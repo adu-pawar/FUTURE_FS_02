@@ -1,15 +1,16 @@
 import { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FiHome as HomeIcon, FiUsers as UsersIcon, FiUserPlus as AddIcon, FiLogOut as LogOutIcon } from 'react-icons/fi';
+import { FiHome as HomeIcon, FiUsers as UsersIcon, FiUserPlus as AddIcon, FiLogOut as LogOutIcon, FiX } from 'react-icons/fi';
 import { AuthContext } from '../context/AuthContext';
 
-const Sidebar = () => {
+const Sidebar = ({ onClose }) => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+    if (onClose) onClose();
   };
 
   const navItems = [
@@ -21,14 +22,24 @@ const Sidebar = () => {
   return (
     <div className="flex h-screen w-64 flex-col justify-between bg-dark text-white shadow-2xl">
       <div>
-        <div className="flex h-20 items-center justify-center border-b border-gray-700">
-          <h1 className="text-2xl font-bold text-primary">Customer manegment</h1>
+        <div className="flex h-20 items-center justify-between border-b border-gray-700 px-6">
+          <div className="flex items-center gap-2">
+            <img src="/FUTURE_FS_02/logo.png" alt="ManageUp Logo" className="h-8 w-8 rounded-lg object-contain" />
+            <h1 className="text-xl font-bold text-primary">ManageUp</h1>
+          </div>
+          <button 
+            onClick={onClose}
+            className="rounded-lg p-1 text-gray-400 hover:bg-gray-800 lg:hidden"
+          >
+            <FiX size={24} />
+          </button>
         </div>
         <nav className="mt-6 flex flex-col gap-2 px-4">
           {navItems.map((item) => (
             <NavLink
               key={item.name}
               to={item.path}
+              onClick={onClose}
               className={({ isActive }) =>
                 `flex items-center gap-3 rounded-lg px-4 py-3 transition-all duration-300 ${
                   isActive

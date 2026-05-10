@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://future-fs-02-1-eebm.onrender.com/api'
+  baseURL: import.meta.env.VITE_API_URL || 'https://future-fs-02-1-eebm.onrender.com/api'
 });
 
 // Add a request interceptor to attach the JWT token

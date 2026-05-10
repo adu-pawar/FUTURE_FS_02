@@ -80,21 +80,21 @@ const CustomersListing = () => {
 
       <div className="rounded-2xl bg-white p-6 shadow-sm">
         {/* Filters */}
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row">
+        <div className="mb-6 flex flex-col gap-4 lg:flex-row">
           <div className="relative flex-1">
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Search by name, email, or company..."
-              className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2.5 pl-10 pr-4 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2.5 pl-10 pr-4 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm md:text-base"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="relative w-full sm:w-64">
+          <div className="relative w-full lg:w-64">
             <FiFilter className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <select
-              className="w-full appearance-none rounded-lg border border-gray-200 bg-gray-50 py-2.5 pl-10 pr-4 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="w-full appearance-none rounded-lg border border-gray-200 bg-gray-50 py-2.5 pl-10 pr-4 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm md:text-base"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >

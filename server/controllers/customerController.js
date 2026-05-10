@@ -7,7 +7,7 @@ const Note = require('../models/Note');
 // @access  Private
 const getCustomers = asyncHandler(async (req, res) => {
   const { status, search } = req.query;
-  const query = { user: req.user.id };
+  const query = { user: req.user._id };
   
   if (status) {
     query.status = status;
@@ -29,17 +29,11 @@ const getCustomers = asyncHandler(async (req, res) => {
 // @route   GET /api/customers/:id
 // @access  Private
 const getCustomerById = asyncHandler(async (req, res) => {
-  const customer = await Customer.findById(req.params.id);
+  const customer = await Customer.findOne({ _id: req.params.id, user: req.user._id });
   
   if (!customer) {
     res.status(404);
-    throw new Error('Customer not found');
-  }
-
-  // Make sure the logged-in user owns the customer
-  if (customer.user.toString() !== req.user.id) {
-    res.status(401);
-    throw new Error('User not authorized');
+    throw new Error('Customer not found or not authorized');
   }
   
   res.status(200).json(customer);
@@ -51,7 +45,7 @@ const getCustomerById = asyncHandler(async (req, res) => {
 const createCustomer = asyncHandler(async (req, res) => {
   const customer = await Customer.create({
     ...req.body,
-    user: req.user.id,
+    user: req.user._id,
   });
   res.status(201).json(customer);
 });
@@ -60,17 +54,11 @@ const createCustomer = asyncHandler(async (req, res) => {
 // @route   PUT /api/customers/:id
 // @access  Private
 const updateCustomer = asyncHandler(async (req, res) => {
-  const customer = await Customer.findById(req.params.id);
+  const customer = await Customer.findOne({ _id: req.params.id, user: req.user._id });
 
   if (!customer) {
     res.status(404);
-    throw new Error('Customer not found');
-  }
-
-  // Make sure the logged-in user owns the customer
-  if (customer.user.toString() !== req.user.id) {
-    res.status(401);
-    throw new Error('User not authorized');
+    throw new Error('Customer not found or not authorized');
   }
 
   // Use Object.assign and save() to trigger pre-save hooks
@@ -84,17 +72,11 @@ const updateCustomer = asyncHandler(async (req, res) => {
 // @route   DELETE /api/customers/:id
 // @access  Private
 const deleteCustomer = asyncHandler(async (req, res) => {
-  const customer = await Customer.findById(req.params.id);
+  const customer = await Customer.findOne({ _id: req.params.id, user: req.user._id });
 
   if (!customer) {
     res.status(404);
-    throw new Error('Customer not found');
-  }
-
-  // Make sure the logged-in user owns the customer
-  if (customer.user.toString() !== req.user.id) {
-    res.status(401);
-    throw new Error('User not authorized');
+    throw new Error('Customer not found or not authorized');
   }
 
   await customer.deleteOne();
@@ -109,17 +91,11 @@ const deleteCustomer = asyncHandler(async (req, res) => {
 // @route   POST /api/customers/:id/payments
 // @access  Private
 const addPayment = asyncHandler(async (req, res) => {
-  const customer = await Customer.findById(req.params.id);
+  const customer = await Customer.findOne({ _id: req.params.id, user: req.user._id });
 
   if (!customer) {
     res.status(404);
-    throw new Error('Customer not found');
-  }
-
-  // Make sure the logged-in user owns the customer
-  if (customer.user.toString() !== req.user.id) {
-    res.status(401);
-    throw new Error('User not authorized');
+    throw new Error('Customer not found or not authorized');
   }
 
   const { amountPaid, paymentMethod, transactionId, note } = req.body;

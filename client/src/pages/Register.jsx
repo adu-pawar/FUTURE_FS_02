@@ -36,8 +36,8 @@ const Register = () => {
         className="glass relative z-10 w-full max-w-md rounded-2xl p-10 shadow-2xl"
       >
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/20">
-            <FiUser className="text-3xl text-blue-400" />
+          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-white/10 p-4">
+            <img src="/FUTURE_FS_02/logo.png" alt="ManageUp Logo" className="h-full w-full object-contain" />
           </div>
           <h2 className="text-3xl font-bold text-white">Create Account</h2>
           <p className="mt-2 text-sm text-gray-300">Sign up to manage your CRM</p>

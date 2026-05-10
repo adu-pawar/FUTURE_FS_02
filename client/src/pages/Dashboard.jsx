@@ -111,27 +111,27 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Dashboard Overview</h1>
-        <p className="text-gray-500">Welcome back! Here's what's happening with your customers.</p>
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Dashboard Overview</h1>
+        <p className="text-sm md:text-base text-gray-500">Welcome back! Here's what's happening with your customers.</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {statsCards.map((stat, index) => (
           <motion.div
             key={stat.title}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="flex items-center rounded-2xl bg-white p-6 shadow-sm transition-all hover:shadow-md"
+            className="flex items-center rounded-2xl bg-white p-4 md:p-6 shadow-sm transition-all hover:shadow-md"
           >
-            <div className={`mr-4 flex h-14 w-14 items-center justify-center rounded-xl text-2xl text-white ${stat.color} shadow-lg`}>
+            <div className={`mr-4 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl text-xl md:text-2xl text-white ${stat.color} shadow-lg`}>
               {stat.icon}
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-              <h3 className="text-2xl font-bold text-gray-800">{stat.value}</h3>
+              <p className="text-xs md:text-sm font-medium text-gray-500">{stat.title}</p>
+              <h3 className="text-xl md:text-2xl font-bold text-gray-800">{stat.value}</h3>
             </div>
           </motion.div>
         ))}
@@ -143,10 +143,10 @@ const Dashboard = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4 }}
-          className="col-span-1 rounded-2xl bg-white p-6 shadow-sm lg:col-span-2"
+          className="col-span-1 rounded-2xl bg-white p-4 md:p-6 shadow-sm lg:col-span-2"
         >
           <h3 className="mb-4 text-lg font-semibold text-gray-800">Customer Growth</h3>
-          <div className="h-[300px] w-full">
+          <div className="h-[250px] md:h-[300px] w-full">
             <Line data={lineData} options={{ maintainAspectRatio: false }} />
           </div>
         </motion.div>
@@ -155,10 +155,10 @@ const Dashboard = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5 }}
-          className="col-span-1 rounded-2xl bg-white p-6 shadow-sm"
+          className="col-span-1 rounded-2xl bg-white p-4 md:p-6 shadow-sm"
         >
           <h3 className="mb-4 text-lg font-semibold text-gray-800">Status Distribution</h3>
-          <div className="flex h-[300px] items-center justify-center">
+          <div className="flex h-[250px] md:h-[300px] items-center justify-center">
             <Doughnut data={doughnutData} options={{ maintainAspectRatio: false, cutout: '70%' }} />
           </div>
         </motion.div>

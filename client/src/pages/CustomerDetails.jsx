@@ -203,17 +203,17 @@ const CustomerDetails = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/customers')}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-500 shadow-sm transition-all hover:bg-gray-50 hover:text-gray-800"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-gray-500 shadow-sm transition-all hover:bg-gray-50 hover:text-gray-800"
           >
             <FiArrowLeft />
           </button>
-          <h1 className="text-3xl font-bold text-gray-800">{lead.name}'s Profile</h1>
+          <h1 className="text-xl md:text-3xl font-bold text-gray-800 truncate">{lead.name}'s Profile</h1>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={handleDeleteCustomer}
             className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-red-500 shadow-sm transition-all hover:bg-red-50 hover:text-red-600"
@@ -228,11 +228,11 @@ const CustomerDetails = () => {
             {isEditing ? 'Cancel Edit' : 'Edit Details'}
           </button>
           <div className="flex items-center gap-2 border-l pl-3">
-            <span className="text-sm font-medium text-gray-500">Status:</span>
+            <span className="hidden text-sm font-medium text-gray-500 md:block">Status:</span>
             <select
               value={lead.status}
               onChange={handleStatusChange}
-              className="rounded-lg border border-gray-200 bg-white py-2 pl-4 pr-8 text-sm font-semibold outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="rounded-lg border border-gray-200 bg-white py-2 pl-3 pr-8 text-xs md:text-sm font-semibold outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
             >
               <option value="New">New</option>
               <option value="Contacted">Contacted</option>
@@ -601,7 +601,7 @@ const CustomerDetails = () => {
                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-gray-400">
                   <FiDollarSign className="text-3xl" />
                 </div>
-                <p className="text-gray-500 font-medium">No payments recorded yet.</p>
+                <p className="text-gray-500 font-medium text-sm">No payments recorded yet.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -611,7 +611,7 @@ const CustomerDetails = () => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.05 }}
-                    className="flex flex-col rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:shadow-md hover:border-emerald-200"
+                    className="flex flex-col rounded-2xl border border-gray-100 bg-white p-4 md:p-5 shadow-sm transition-all hover:shadow-md hover:border-emerald-200"
                   >
                     <div className="mb-4 flex items-center justify-between">
                       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">

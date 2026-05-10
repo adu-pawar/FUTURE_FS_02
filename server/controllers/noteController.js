@@ -10,7 +10,7 @@ const getNotes = asyncHandler(async (req, res) => {
   const { customerId } = req.params;
 
   // Verify customer belongs to user
-  const customer = await Customer.findOne({ _id: customerId, user: req.user.id });
+  const customer = await Customer.findOne({ _id: customerId, user: req.user._id });
   if (!customer) {
     res.status(401);
     throw new Error('User not authorized to access these notes');
@@ -41,7 +41,7 @@ const addNote = asyncHandler(async (req, res) => {
   }
 
   // Ensure customer exists and belongs to the user
-  const customer = await Customer.findOne({ _id: customerId, user: req.user.id });
+  const customer = await Customer.findOne({ _id: customerId, user: req.user._id });
   if (!customer) {
     const isMemory = mongoose.connection.host === '127.0.0.1';
     res.status(404);
@@ -52,7 +52,7 @@ const addNote = asyncHandler(async (req, res) => {
     const note = new Note({
       customerId,
       text,
-      createdBy: req.user.id,
+      createdBy: req.user._id,
     });
 
     await note.save();
@@ -78,7 +78,7 @@ const updateNote = asyncHandler(async (req, res) => {
   }
 
   // Verify customer belongs to user
-  const customer = await Customer.findOne({ _id: note.customerId, user: req.user.id });
+  const customer = await Customer.findOne({ _id: note.customerId, user: req.user._id });
   if (!customer) {
     res.status(401);
     throw new Error('User not authorized');
@@ -105,7 +105,7 @@ const deleteNote = asyncHandler(async (req, res) => {
   }
 
   // Verify customer belongs to user
-  const customer = await Customer.findOne({ _id: note.customerId, user: req.user.id });
+  const customer = await Customer.findOne({ _id: note.customerId, user: req.user._id });
   if (!customer) {
     res.status(401);
     throw new Error('User not authorized');

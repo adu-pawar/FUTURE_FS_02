@@ -8,10 +8,10 @@ const getAnalytics = asyncHandler(async (req, res) => {
   const mongoose = require('mongoose');
   const userId = new mongoose.Types.ObjectId(req.user.id);
 
-  const totalCustomers = await Customer.countDocuments({ user: req.user.id });
-  const newCustomers = await Customer.countDocuments({ user: req.user.id, status: 'New' });
-  const contactedCustomers = await Customer.countDocuments({ user: req.user.id, status: 'Contacted' });
-  const convertedCustomers = await Customer.countDocuments({ user: req.user.id, status: 'Converted' });
+  const totalCustomers = await Customer.countDocuments({ user: req.user._id });
+  const newCustomers = await Customer.countDocuments({ user: req.user._id, status: 'New' });
+  const contactedCustomers = await Customer.countDocuments({ user: req.user._id, status: 'Contacted' });
+  const convertedCustomers = await Customer.countDocuments({ user: req.user._id, status: 'Converted' });
   
   // Status Distribution
   const statusDistribution = await Customer.aggregate([
